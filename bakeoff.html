@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+    document.addEventListener('DOMContentLoaded', start, false);
+        function start(){
+            document.getElementById("button0").addEventListener("click", function(){write(this);} );
+            document.getElementById("button1").addEventListener("click", function(){write(this);} );
+            document.getElementById("button2").addEventListener("click", function(){write(this);} );
+            document.getElementById("button3").addEventListener("click", function(){write(this);} );
+            document.getElementById("button4").addEventListener("click", function(){write(this);} );
+			function write(elem){
+            	if (elem.value == "Bksp") {
+                	currText = document.getElementById("msg").innerHTML;
+                	document.getElementById("msg").innerHTML = currText.slice(0, -1);
+                } else if (elem.value == "␣") {
+                	document.getElementById("msg").innerHTML += " ";
+                } else {
+                	document.getElementById("msg").innerHTML += elem.value;
+                }
+            }
+        };
+    </script>
+ </head>
+ <body>
+
+ <textarea id = "msg" disabled rows="3" cols="50">
+ </textarea>
+ <br>
+ <input class="button" type="button" id="button0" value="Bksp"/>
+ <br>
+ <input class="button" type="button" id="button1" value="A" />
+ <br>
+ <input class="button" type="button" id="button2" value="B"/>
+ <br>
+ <input class="button" type="button" id="button3" value="C"/>
+ <br>
+ <input class="button" type="button" id="button4" value="␣"/>
+
+</body>
+</html>
