@@ -30,7 +30,9 @@ function start() {
     mcLeft.add(new Hammer.Swipe())
     mcLeft.on("swipe", swipeFunc);
     mcLeft.on("singletap", function(ev) {
-        document.getElementById("msg").innerHTML += btnLeft.textContent
+        currText = document.getElementById("msg").innerHTML;
+        currText = currText.slice(0, -1) + btnLeft.textContent + "_";
+        document.getElementById("msg").innerHTML = currText;
     });
 
     var mcRight = new Hammer.Manager(btnRight);
@@ -38,19 +40,37 @@ function start() {
     mcRight.add(new Hammer.Swipe())
     mcRight.on("swipe", swipeFunc);
     mcRight.on("singletap", function(ev) {
-        document.getElementById("msg").innerHTML += btnRight.textContent
+        currText = document.getElementById("msg").innerHTML;
+        currText = currText.slice(0, -1) + btnRight.textContent + "_";
+        document.getElementById("msg").innerHTML = currText;
     });
     
     function swipeFunc(ev) {
-        var deltaY = ev.deltaY
-        if (deltaY < 0) {
-            //Swipe up
-            btnLeft.textContent = letterAfter(btnLeft.textContent);
-            btnRight.textContent = letterAfter(btnRight.textContent);
-        } else if (deltaY > 0) {
-            //Swipe down
-            btnLeft.textContent = letterBefore(btnLeft.textContent);
-            btnRight.textContent = letterBefore(btnRight.textContent);
+        var deltaY = ev.deltaY;
+        var deltaX = ev.deltaX;
+        console.log(deltaY)
+        console.log(deltaX)
+
+        //Up/down swipe
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            if (deltaY < 0) {
+                //Swipe up: scroll down
+                btnLeft.textContent = letterAfter(btnLeft.textContent);
+                btnRight.textContent = letterAfter(btnRight.textContent);
+            } else if (deltaY > 0) {
+                //Swipe down: scroll up
+                btnLeft.textContent = letterBefore(btnLeft.textContent);
+                btnRight.textContent = letterBefore(btnRight.textContent);
+            }
+        } else {
+            currText = document.getElementById("msg").innerHTML;
+            if (deltaX < 0) {
+                //Swipe left: backspace
+                document.getElementById("msg").innerHTML = currText.slice(0, -2) + "_";
+            } else if (deltaX > 0) {
+                //Swipe right: space
+                document.getElementById("msg").innerHTML = currText.slice(0, -1) + " _";
+            }
         }
     }
 
@@ -97,7 +117,7 @@ function start() {
         for (var i = 0; i < NUM_ROWS; i++) {
             for (var j = 0; j < NUM_COLS; j++) {
                 var btn = document.createElement("input");
-                btn.className = "button";
+                btn.className = "button"
                 btn.type = "button";
                 btn.id = `button${i}_${j}`;
                 charCode = COL_OFFSET * j + i + 65;
