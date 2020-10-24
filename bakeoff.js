@@ -43,12 +43,12 @@ function start() {
     
     function swipeFunc(ev) {
         var deltaY = ev.deltaY
-        if (deltaY > 0) {
-            //Swipe down
+        if (deltaY < 0) {
+            //Swipe up
             btnLeft.textContent = letterAfter(btnLeft.textContent);
             btnRight.textContent = letterAfter(btnRight.textContent);
-        } else if (deltaY < 0) {
-            //Swipe up
+        } else if (deltaY > 0) {
+            //Swipe down
             btnLeft.textContent = letterBefore(btnLeft.textContent);
             btnRight.textContent = letterBefore(btnRight.textContent);
         }
