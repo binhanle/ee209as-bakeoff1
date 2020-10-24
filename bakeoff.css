@@ -1,0 +1,16 @@
+.hammerButton {
+    background: silver;
+    height: 2cm;
+    width: 2cm;
+    line-height: 2cm;
+    text-align: center;
+    vertical-align: middle;
+    font: Helvetica, Arial, sans-serif;
+}
+
+#btnLeft {
+    float: left;
+}
+#btnRight {
+    float: right;
+}

@@ -18,6 +18,41 @@ function start() {
     document.getElementById("buttonDown").addEventListener("click", function() {
         scrollDown(letterArea);
     });
+    
+    var btnLeft = document.getElementById("btnLeft");
+    var btnRight = document.getElementById("btnRight");
+
+    btnLeft.textContent = "G";
+    btnRight.textContent = "T";
+
+    var mcLeft = new Hammer.Manager(btnLeft);
+    mcLeft.add(new Hammer.Tap({event: "singletap"}));
+    mcLeft.add(new Hammer.Swipe())
+    mcLeft.on("swipe", swipeFunc);
+    mcLeft.on("singletap", function(ev) {
+        document.getElementById("msg").innerHTML += btnLeft.textContent
+    });
+
+    var mcRight = new Hammer.Manager(btnRight);
+    mcRight.add(new Hammer.Tap({event: "singletap"}));
+    mcRight.add(new Hammer.Swipe())
+    mcRight.on("swipe", swipeFunc);
+    mcRight.on("singletap", function(ev) {
+        document.getElementById("msg").innerHTML += btnRight.textContent
+    });
+    
+    function swipeFunc(ev) {
+        var deltaY = ev.deltaY
+        if (deltaY > 0) {
+            //Swipe down
+            btnLeft.textContent = letterAfter(btnLeft.textContent);
+            btnRight.textContent = letterAfter(btnRight.textContent);
+        } else if (deltaY < 0) {
+            //Swipe up
+            btnLeft.textContent = letterBefore(btnLeft.textContent);
+            btnRight.textContent = letterBefore(btnRight.textContent);
+        }
+    }
 
     function write(elem) {
         if (elem.value == "Bksp") {
