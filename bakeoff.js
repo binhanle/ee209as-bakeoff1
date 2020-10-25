@@ -44,6 +44,9 @@ function start() {
     mcRight.on("singletap", function() {
         write(btnRight)
     });
+
+    var timerRunning = false;
+    var startTime;
     
     function swipeFunc(ev) {
         var deltaY = ev.deltaY;
@@ -87,6 +90,7 @@ function start() {
             currText = currText.slice(0, -1) + elem.value + "_";
             document.getElementById("msg").innerHTML = currText;
         }
+        updateWpm();
     }
 
     function letterBefore(letter) {
@@ -158,6 +162,20 @@ function start() {
             }
             var br = document.createElement("br");
             elem.appendChild(br);
+        }
+    }
+
+    function updateWpm() {
+        if (!timerRunning) {
+            startTime = new Date();
+            timerRunning = true;
+            document.getElementById("wpmText").innerHTML = "...";
+        } else {
+            currTime = new Date();
+            elapsedTimeSec = (currTime - startTime) / 1000;
+            numChars = document.getElementById("msg").value.length - 1;
+            wpm = (numChars - 1) / elapsedTimeSec * 60 * 1/5;
+            document.getElementById("wpmText").innerHTML = wpm.toFixed(1);
         }
     }
 };
