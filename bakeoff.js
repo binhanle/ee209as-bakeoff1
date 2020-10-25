@@ -120,7 +120,7 @@ function start() {
     function addLetterButtons(elem) {
         for (var i = 0; i < NUM_ROWS; i++) {
             for (var j = 0; j < NUM_COLS; j++) {
-                if (j == 0 || j == NUM_COLS - 2){
+                if (j == 0 || j == 2){
                     var btn = document.createElement("input");
                     btn.type = "button";
                     charCode = COL_OFFSET * j/2 + i + 65;
@@ -128,7 +128,7 @@ function start() {
                 }
                 if (i == Math.floor((NUM_ROWS - 1) / 2)) {
                     if (j == 0 || j == 2) {
-                        btn.className = "hammerButton";
+                        btn.className = "hammerButtonText";
                         if (j == 0) {
                             btn.id = "btnLeft";
                         } else {
@@ -137,10 +137,10 @@ function start() {
                     } else {
                         var btn = document.createElement("input");
                         btn.type = "button";
-                        btn.className = "hammerButton";
+                        btn.className = "hammerButtonOther";
                         if (j == 1) {
                             btn.id = "bksp";
-                            btn.value = "Bksp"
+                            btn.value = "⌫"
                         } else {
                             btn.id = "space";
                             btn.value = "⎵";
