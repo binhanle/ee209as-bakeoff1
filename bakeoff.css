@@ -1,8 +1,18 @@
-.hammerButton {
+.hammerButtonText {
     background: silver;
-    height: 1.4cm;
-    width: 1.4cm;
-    line-height: 1.4cm;
+    height: 1.2cm;
+    width: 1.2cm;
+    line-height: 1.2cm;
+    text-align: center;
+    vertical-align: middle;
+    font: Helvetica, Arial, sans-serif;
+}
+
+.hammerButtonOther {
+    background: silver;
+    height: 0.74cm;
+    width: 0.74cm;
+    line-height: 0.74cm;
     text-align: center;
     vertical-align: middle;
     font: Helvetica, Arial, sans-serif;
