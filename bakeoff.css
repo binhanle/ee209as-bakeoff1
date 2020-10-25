@@ -1,20 +1,23 @@
 .hammerButton {
     background: silver;
-    height: 1cm;
-    width: 1cm;
-    line-height: 1cm;
+    height: 1.4cm;
+    width: 1.4cm;
+    line-height: 1.4cm;
     text-align: center;
     vertical-align: middle;
     font: Helvetica, Arial, sans-serif;
 }
 
-#btnLeft {
-    float: left;
-}
-#btnRight {
-    float: right;
+.button {
+    height: 1cm;
+    width: 1cm;
 }
 
 #msg {
     width: 100%;
+}
+
+#letterArea {
+    margin-left: 5%;
+    margin-right: 5%;
 }

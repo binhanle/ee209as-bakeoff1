@@ -6,43 +6,27 @@ document.addEventListener('DOMContentLoaded', start, false);
 function start() {
     letterArea = document.getElementById("letterArea");
     addLetterButtons(letterArea);
-    document.getElementById("buttonBksp").addEventListener("click", function() {
-        write(this);
-    });
-    document.getElementById("buttonSpace").addEventListener("click", function() {
-        write(this);
-    });
-    document.getElementById("buttonUp").addEventListener("click", function() {
-        scrollUp(letterArea);
-    });
-    document.getElementById("buttonDown").addEventListener("click", function() {
-        scrollDown(letterArea);
-    });
-    
+
     var btnLeft = document.getElementById("btnLeft");
     var btnRight = document.getElementById("btnRight");
 
-    btnLeft.textContent = "G";
-    btnRight.textContent = "T";
+    btnLeft.value = "G";
+    btnRight.value = "T";
 
     var mcLeft = new Hammer.Manager(btnLeft);
     mcLeft.add(new Hammer.Tap({event: "singletap"}));
     mcLeft.add(new Hammer.Swipe())
     mcLeft.on("swipe", swipeFunc);
-    mcLeft.on("singletap", function(ev) {
-        currText = document.getElementById("msg").innerHTML;
-        currText = currText.slice(0, -1) + btnLeft.textContent + "_";
-        document.getElementById("msg").innerHTML = currText;
+    mcLeft.on("singletap", function() {
+        write(btnLeft)
     });
 
     var mcRight = new Hammer.Manager(btnRight);
     mcRight.add(new Hammer.Tap({event: "singletap"}));
     mcRight.add(new Hammer.Swipe())
     mcRight.on("swipe", swipeFunc);
-    mcRight.on("singletap", function(ev) {
-        currText = document.getElementById("msg").innerHTML;
-        currText = currText.slice(0, -1) + btnRight.textContent + "_";
-        document.getElementById("msg").innerHTML = currText;
+    mcRight.on("singletap", function() {
+        write(btnRight)
     });
     
     function swipeFunc(ev) {
@@ -51,37 +35,42 @@ function start() {
         console.log(deltaY)
         console.log(deltaX)
 
-        //Up/down swipe
+        //Up-down swipe
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
             if (deltaY < 0) {
                 //Swipe up: scroll down
-                btnLeft.textContent = letterAfter(btnLeft.textContent);
-                btnRight.textContent = letterAfter(btnRight.textContent);
+                scrollDown(letterArea)
+                btnLeft.value = letterAfter(btnLeft.value);
+                btnRight.value = letterAfter(btnRight.value);
             } else if (deltaY > 0) {
                 //Swipe down: scroll up
-                btnLeft.textContent = letterBefore(btnLeft.textContent);
-                btnRight.textContent = letterBefore(btnRight.textContent);
+                scrollUp(letterArea)
+                btnLeft.value = letterBefore(btnLeft.value);
+                btnRight.value = letterBefore(btnRight.value);
             }
+        //Left-right swipe
         } else {
-            currText = document.getElementById("msg").innerHTML;
             if (deltaX < 0) {
                 //Swipe left: backspace
-                document.getElementById("msg").innerHTML = currText.slice(0, -2) + "_";
+                write(btnLeft, "back")
+
             } else if (deltaX > 0) {
                 //Swipe right: space
-                document.getElementById("msg").innerHTML = currText.slice(0, -1) + " _";
+                write(btnLeft, "space")
             }
         }
     }
 
-    function write(elem) {
-        if (elem.value == "Bksp") {
-            currText = document.getElementById("msg").innerHTML;
-            document.getElementById("msg").innerHTML = currText.slice(0, -1);
-        } else if (elem.value == "␣") {
-            document.getElementById("msg").innerHTML += " ";
+    function write(elem, val="") {
+        currText = document.getElementById("msg").innerHTML;
+
+        if (val == "back") {
+            document.getElementById("msg").innerHTML = currText.slice(0, -2) + "_";
+        } else if (val == "space") {
+            document.getElementById("msg").innerHTML = currText.slice(0, -1) + " _";
         } else {
-            document.getElementById("msg").innerHTML += elem.value;
+            currText = currText.slice(0, -1) + elem.value + "_";
+            document.getElementById("msg").innerHTML = currText;
         }
     }
 
@@ -117,15 +106,24 @@ function start() {
         for (var i = 0; i < NUM_ROWS; i++) {
             for (var j = 0; j < NUM_COLS; j++) {
                 var btn = document.createElement("input");
-                btn.className = "button"
                 btn.type = "button";
-                btn.id = `button${i}_${j}`;
+
                 charCode = COL_OFFSET * j + i + 65;
                 btn.value = String.fromCharCode(charCode);
-                btn.addEventListener("click", function() {
-                    write(this);
-                });
-                if (i != Math.floor((NUM_ROWS - 1) / 2)) {
+                if (j == 1) {
+                    btn.style = "float: right";
+                }
+
+                if (i == Math.floor((NUM_ROWS - 1) / 2)) {
+                    btn.className = "hammerButton";
+                    if (j == 0) {
+                        btn.id = "btnLeft";
+                    } else {
+                        btn.id = "btnRight";
+                    }
+                } else {
+                    btn.className = "button"
+                    btn.id = `button${i}_${j}`;
                     btn.disabled = true;
                 }
                 elem.appendChild(btn);
