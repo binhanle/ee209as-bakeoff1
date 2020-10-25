@@ -1,5 +1,5 @@
 const NUM_ROWS = 13;
-const NUM_COLS = 2;
+const NUM_COLS = 4;
 const COL_OFFSET = 13;
 document.addEventListener('DOMContentLoaded', start, false);
 
@@ -9,9 +9,9 @@ function start() {
 
     var btnLeft = document.getElementById("btnLeft");
     var btnRight = document.getElementById("btnRight");
+    var btnBksp = document.getElementById("bksp");
+    var btnSpace = document.getElementById("space");
 
-    btnLeft.value = "G";
-    btnRight.value = "T";
 
     var mcLeft = new Hammer.Manager(btnLeft);
     mcLeft.add(new Hammer.Tap({event: "singletap"}));
@@ -19,6 +19,22 @@ function start() {
     mcLeft.on("swipe", swipeFunc);
     mcLeft.on("singletap", function() {
         write(btnLeft)
+    });
+
+    var mcBksp = new Hammer.Manager(btnBksp);
+    mcBksp.add(new Hammer.Tap({event: "singletap"}));
+    mcBksp.add(new Hammer.Swipe())
+    mcBksp.on("swipe", swipeFunc);
+    mcBksp.on("singletap", function() {
+        write(btnBksp, "back")
+    });
+
+    var mcSpace = new Hammer.Manager(btnSpace);
+    mcSpace.add(new Hammer.Tap({event: "singletap"}));
+    mcSpace.add(new Hammer.Swipe())
+    mcSpace.on("swipe", swipeFunc);
+    mcSpace.on("singletap", function() {
+        write(btnSpace, "space")
     });
 
     var mcRight = new Hammer.Manager(btnRight);
@@ -63,7 +79,6 @@ function start() {
 
     function write(elem, val="") {
         currText = document.getElementById("msg").innerHTML;
-
         if (val == "back") {
             document.getElementById("msg").innerHTML = currText.slice(0, -2) + "_";
         } else if (val == "space") {
@@ -105,26 +120,39 @@ function start() {
     function addLetterButtons(elem) {
         for (var i = 0; i < NUM_ROWS; i++) {
             for (var j = 0; j < NUM_COLS; j++) {
-                var btn = document.createElement("input");
-                btn.type = "button";
-
-                charCode = COL_OFFSET * j + i + 65;
-                btn.value = String.fromCharCode(charCode);
-                if (j == 1) {
-                    btn.style = "float: right";
+                if (j == 0 || j == NUM_COLS - 2){
+                    var btn = document.createElement("input");
+                    btn.type = "button";
+                    charCode = COL_OFFSET * j/2 + i + 65;
+                    btn.value = String.fromCharCode(charCode);
                 }
-
                 if (i == Math.floor((NUM_ROWS - 1) / 2)) {
-                    btn.className = "hammerButton";
-                    if (j == 0) {
-                        btn.id = "btnLeft";
+                    if (j == 0 || j == 2) {
+                        btn.className = "hammerButton";
+                        if (j == 0) {
+                            btn.id = "btnLeft";
+                        } else {
+                            btn.id = "btnRight"
+                        }
                     } else {
-                        btn.id = "btnRight";
+                        var btn = document.createElement("input");
+                        btn.type = "button";
+                        btn.className = "hammerButton";
+                        if (j == 1) {
+                            btn.id = "bksp";
+                            btn.value = "Bksp"
+                        } else {
+                            btn.id = "space";
+                            btn.value = "⎵";
+                        }
                     }
                 } else {
                     btn.className = "button"
                     btn.id = `button${i}_${j}`;
                     btn.disabled = true;
+                }
+                if (j == 2 || j == 3) {
+                    btn.style = "float: right";
                 }
                 elem.appendChild(btn);
             }
