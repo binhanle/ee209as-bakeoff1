@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .hammerButtonText {
     background: silver;
     height: 1.2cm;
